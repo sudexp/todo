@@ -20,6 +20,7 @@
                v-model="todo.title"
                @blur="doneEdit(todo)"
                @keyup.enter="doneEdit(todo)"
+               @keyup.esc="cancelEdit(todo)"
                v-focus>
       </div>
       <div class="remove-item" @click="removeTodo(index)">
@@ -36,6 +37,7 @@ export default {
     return {
       newTodo: '',
       idForTodo: 3,
+      beforeEditCache: '',
       todos: [
         {
           'id': 1,
@@ -75,9 +77,14 @@ export default {
       this.idForTodo++
     },
     editTodo(todo) {
+      this.beforeEditCache = todo.title,
       todo.editing = true
     },
     doneEdit(todo) {
+      todo.editing = false
+    },
+    cancelEdit(todo) {
+      todo.title = this.beforeEditCache,
       todo.editing = false
     },
     removeTodo(index) {
@@ -100,7 +107,7 @@ export default {
   }
 
   .todo-item {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
