@@ -9,9 +9,12 @@
          :key="todo.id" 
          class="todo-item">
       <div class="todo-item-left">
+        <input type="checkbox"
+               v-model="todo.completed">
         <div v-if="!todo.editing"
              @dblclick="editTodo(todo)"
-             class="todo-item-label">
+             class="todo-item-label"
+             :class="{ completed : todo.completed }">
           {{ todo.title }}
         </div>
         <input v-else
@@ -66,13 +69,11 @@ export default {
       if(this.newTodo.trim().length === 0) {
         return
       }
-
       this.todos.push({
         id: this.idForTodo,
         title: this.newTodo,
         completed: false
       })
-
       this.newTodo = '',
       this.idForTodo++
     },
@@ -81,6 +82,9 @@ export default {
       todo.editing = true
     },
     doneEdit(todo) {
+      if(todo.title.trim() === '') {
+        todo.title = this.beforeEditCache
+      }
       todo.editing = false
     },
     cancelEdit(todo) {
@@ -125,11 +129,13 @@ export default {
     display: flex;
     align-items: center;
   }
+
   .todo-item-label {
     padding: 10px;
     border: 1px solid white;
     margin-left: 12px;
   }
+
   .todo-item-edit {
     font-size: 24px;
     color: #2c3e50;
@@ -142,4 +148,10 @@ export default {
       outline: none;
     }
   }
+
+  .completed {
+    text-decoration: line-through;
+    color: grey;
+  }
+
 </style>
