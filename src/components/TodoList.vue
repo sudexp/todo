@@ -5,7 +5,7 @@
            placeholder="Whats need to be done?"
            v-model="newTodo"
            @keyup.enter="addTodo">
-    <div v-for="(todo, index) in todos" 
+    <div v-for="(todo, index) in todosFiltered" 
          :key="todo.id" 
          class="todo-item">
       <div class="todo-item-left">
@@ -88,6 +88,16 @@ export default {
     },
     anyRemaining() {
       return this.remaining !== 0
+    },
+    todosFiltered() {
+      if(this.filter === 'all') {
+        return this.todos
+      } else if (this.filter === 'active') {
+        return this.todos.filter(todo => !todo.completed)
+      } else if (this.filter === 'completed') {
+        return this.todos.filter(todo => todo.completed)
+      } 
+      return this.todo
     }
   },
   directives: {
