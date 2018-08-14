@@ -33,13 +33,17 @@ export default {
     todo: {
       type: Object,
       required: true
+    },
+    checkAll: { 
+      type: Boolean,
+      required: true
     }
   },
   data() {
     return {
       id: this.todo.id,
       title: this.todo.title,
-      completed: this.todo.copmleted,
+      completed: this.todo.completed,
       editing: this.todo.editing,
       beforeEditCache: ''
     };
@@ -51,28 +55,43 @@ export default {
       }
     }
   },
+  watch: {
+    checkAll() {
+      if (this.checkAll) {
+        this.comleted = true;
+      } else {
+        this.completed = this.todo.completed;
+      }
+    }
+  },
   methods: {
     removeTodo(id) {
+      console.log('TodoItem.removeTodo ', id)
       this.$emit('removedTodo', id)
     },
     editTodo() {
-      this.beforeEditCache = this.title,
-      todo.editing = true
+      this.beforeEditCache = this.title;
+      this.editing = true
     },
     doneEdit() {
-      if (todo.title.trim() === '') {
+      if (this.editing === false) {
+        return;
+      }
+      console.log('doneEdit ', this.title)
+      if (this.title.trim() === '') {
         this.title = this.beforeEditCache;
       }
       this.editing = false;
-      this.$emit('finishedEdit', {
-        index: this.index,
-        todo: {
-          id: this.id,
-          title: this.title,
-          completed: this.completed,
-          editing: this.editing
-        }
-      })
+      this.todo.title = this.title;
+      // this.$emit('finishedEdit', {
+      //   index: this.index,
+      //   todo: {
+      //     id: this.id,
+      //     title: this.title,
+      //     completed: this.completed,
+      //     editing: this.editing
+      //   }
+      // })
     },
     cancelEdit() {
       this.title = this.beforeEditCache,
@@ -81,26 +100,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.todo-item {
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  animation-duration: 0.5s;
-}
-
-.remove-item {
-  cursor: pointer;
-  margin-left: 14px;
-  &:hover {
-    color: black;
-  }
-}
-
-.todo-item-left {
-  display: flex;
-  align-items: center;
-}
-</style>

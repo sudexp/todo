@@ -111,6 +111,7 @@ export default {
       this.idForTodo++;
     },
     removeTodo(id) {
+      console.log('')
       const index = this.todos.findIndex((item) => item.id == id);
       this.todos.splice(index, 1)
     },
@@ -122,14 +123,35 @@ export default {
     },
     finishedEdit(data) {
       const index = this.todos.findIndex((item) => item.id == data.id);
-      this.todos.splice(index, 1, data)
+      // this.todos.splice(index, 1, data)
     }
   }
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css');
+
+.todo-item {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation-duration: 0.5s;
+}
+
+.remove-item {
+  cursor: pointer;
+  margin-left: 14px;
+  &:hover {
+    color: black;
+  }
+}
+
+.todo-item-left {
+  display: flex;
+  align-items: center;
+}
 
 .todo-input {
   width: 100%;
