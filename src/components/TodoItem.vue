@@ -11,17 +11,17 @@
         {{ title }}
       </div>
       <input v-else
-             class="todo-item-edit" 
-             type="text" 
+             class="todo-item-edit"
+             type="text"
              v-model="title"
              @blur="doneEdit"
              @keyup.enter="doneEdit"
              @keyup.esc="cancelEdit"
              v-focus>
-      <div class="remove-item" 
-           @click="removeTodo(todo.id)">
-        &times;
-      </div>
+    </div>
+    <div class="remove-item"
+         @click="removeTodo(todo.id)">
+      &times;
     </div>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
       type: Object,
       required: true
     },
-    checkAll: { 
+    checkAll: {
       type: Boolean,
       required: true
     }
@@ -46,6 +46,11 @@ export default {
       completed: this.todo.completed,
       editing: this.todo.editing,
       beforeEditCache: ''
+    };
+  },
+  watch: {
+    checkAll() {
+      this.completed = this.checkAll ? true : this.todo.completed;
     }
   },
   directives: {
@@ -55,31 +60,28 @@ export default {
       }
     }
   },
-  watch: {
-    checkAll() {
-      this.completed = this.checkAll ? true : this.todo.completed
-    }
-  },
   methods: {
     removeTodo(id) {
-      this.$emit('removedTodo', id)
+      this.$emit('removedTodo', id);
     },
     editTodo() {
       this.beforeEditCache = this.title;
-      this.editing = true
+      this.editing = true;
     },
     doneEdit() {
-      if (this.editing === false) {
-        return;
-      }
       if (this.title.trim() === '') {
         this.title = this.beforeEditCache;
       }
       this.editing = false;
-      this.todo.title = this.title;
+      this.$emit('finishedEdit', {
+        id: this.id,
+        title: this.title,
+        completed: this.completed,
+        editing: this.editing
+      });
     },
     cancelEdit() {
-      this.title = this.beforeEditCache,
+      this.title = this.beforeEditCache;
       this.editing = false;
     }
   }
