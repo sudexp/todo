@@ -46,7 +46,7 @@ export default {
       completed: this.todo.completed,
       editing: this.todo.editing,
       beforeEditCache: ''
-    };
+    }
   },
   directives: {
     focus: {
@@ -57,16 +57,11 @@ export default {
   },
   watch: {
     checkAll() {
-      if (this.checkAll) {
-        this.comleted = true;
-      } else {
-        this.completed = this.todo.completed;
-      }
+      this.completed = this.checkAll ? true : this.todo.completed
     }
   },
   methods: {
     removeTodo(id) {
-      console.log('TodoItem.removeTodo ', id)
       this.$emit('removedTodo', id)
     },
     editTodo() {
@@ -77,21 +72,11 @@ export default {
       if (this.editing === false) {
         return;
       }
-      console.log('doneEdit ', this.title)
       if (this.title.trim() === '') {
         this.title = this.beforeEditCache;
       }
       this.editing = false;
       this.todo.title = this.title;
-      // this.$emit('finishedEdit', {
-      //   index: this.index,
-      //   todo: {
-      //     id: this.id,
-      //     title: this.title,
-      //     completed: this.completed,
-      //     editing: this.editing
-      //   }
-      // })
     },
     cancelEdit() {
       this.title = this.beforeEditCache,

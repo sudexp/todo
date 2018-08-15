@@ -111,7 +111,6 @@ export default {
       this.idForTodo++;
     },
     removeTodo(id) {
-      console.log('')
       const index = this.todos.findIndex((item) => item.id == id);
       this.todos.splice(index, 1)
     },
@@ -122,8 +121,8 @@ export default {
       this.todos = this.todos.filter(todo => !todo.completed);
     },
     finishedEdit(data) {
-      const index = this.todos.findIndex((item) => item.id == data.id);
-      // this.todos.splice(index, 1, data)
+      const index = this.todos.findIndex((item) => item.id = data.id);
+      this.todos.splice(index, 1, data)
     }
   }
 };
@@ -131,6 +130,16 @@ export default {
 
 <style lang="scss">
 @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css');
+
+.todo-input {
+  width: 100%;
+  padding: 10px 18px;
+  font-size: 18px;
+  margin-bottom: 16px;
+  &:focus {
+    outline: 0;
+  }
+}
 
 .todo-item {
   margin-bottom: 10px;
@@ -151,17 +160,6 @@ export default {
 .todo-item-left {
   display: flex;
   align-items: center;
-}
-
-.todo-input {
-  width: 100%;
-  padding: 10px 18px;
-  font-size: 18px;
-  margin-bottom: 16px;
-
-  &:focus {
-    outline: 0;
-  }
 }
 
 .todo-item-label {
